@@ -36,7 +36,7 @@ app.post("/chat/:id/message", (req, res) => {
       return;
     }
   }
-  res.status(400).end();
+  res.status(404).end();
 });
 
 app.post("/auth", (req, res) => {
@@ -47,14 +47,33 @@ app.post("/auth", (req, res) => {
   res.status(401).end();
 });
 
+app.delete("/chat/:id", (req, res) => {
+  let id = req.params.id;
+  // set chatroom to find id method, then check if it doesent return -1 and THEN splice chatRooms on index
+  for (let index in chatRooms) {
+    if (chatRooms[index].id === id) {
+    }
+  }
+});
+
 app.get("/", (req, res) => {
-  res.staus(200).send("connected");
+  if (req.body) {
+    // check if it works
+    res.staus(200).send({ chatRooms: chatRooms });
+  }
+  res.status(500).end();
 });
 
 app.get("/chat/:id", (req, res) => {
   let id = parseInt(req.params.id);
-
-  res.status(200).send(obj);
+  let body = req.body;
+  for (let index in chatRooms) {
+    if (chatRooms[index].id === id) {
+      res.status(200).send(chatRooms[index]);
+      return;
+    }
+  }
+  res.status(404).end();
 });
 
 app.listen(port, () => console.log("listening on port", port));
