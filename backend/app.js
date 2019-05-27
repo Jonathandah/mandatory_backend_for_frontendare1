@@ -1,7 +1,7 @@
 const express = require("express");
 const uuid = require("uuid/v1");
 const app = express();
-const port = 8000;
+const port = 3000;
 
 app.use(express.json());
 
