@@ -6,10 +6,9 @@ import {
   BrowserRouter as Router
 } from "react-router-dom";
 import axios from "axios";
-import { login$ } from "../store/storeLogin.js";
+import { login$, updateUserLogin } from "../store/storeLogin.js";
 
 function Login() {
-  let [login, updateLogin] = useState(login$.value);
   let [username, updateUsername] = useState("");
 
   function changeUsername(e) {
@@ -18,9 +17,10 @@ function Login() {
   }
   function onSubmit(e) {
     e.preventDefault();
-    axios.get("/").then(response => {
+    axios.post("/login", { user: username }).then(response => {
       console.log(response);
     });
+    updateUserLogin(true);
   }
 
   return (

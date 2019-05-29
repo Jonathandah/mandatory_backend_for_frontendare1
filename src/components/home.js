@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Route,
   Link,
   Redirect,
   BrowserRouter as Router
 } from "react-router-dom";
-import { login$ } from "../store/storeLogin";
+import { login$, updateUserLogin } from "../store/storeLogin";
+import "./css/home.css";
 
 function Home() {
   let [roomName, updateRoomName] = useState("nameless :(");
   let [login, updateLogin] = useState(login$.value);
+  /*
+  useEffect(() => {
+    // håller koll på om url:n har bytt adress, uppdaterar isåfall med nya filer för just den andressen
+    let subscriptionLogin = login$.subscribe(login => {
+      updateUserLogin(login);
+    });
+
+    return () => {
+      subscriptionLogin.unsubscribe();
+    };
+  }, []); //vad useEffect håller koll på
+*/
 
   function createRoom() {
     return <Link path={`/${roomName}`}>{roomName}</Link>;
