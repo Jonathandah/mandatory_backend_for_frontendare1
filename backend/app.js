@@ -16,7 +16,7 @@ setInterval(() => {
   });
 }, 5000);
 
-app.post("/chat", (req, res) => {
+app.post("/chats/add", (req, res) => {
   //skapa nytt rum
   let body = req.body;
   let chatRoom = {
@@ -28,7 +28,7 @@ app.post("/chat", (req, res) => {
   res.status("200").send(chatRoom);
 });
 
-app.post("/chat/:id/message", (req, res) => {
+app.post("/chats/:id/message", (req, res) => {
   //posta nytt meddelande
   let id = req.params.id;
   let body = req.body;
@@ -56,7 +56,7 @@ app.post("/login", (req, res) => {
   res.status(401).end();
 });
 
-app.delete("/chat/:id", (req, res) => {
+app.delete("/chats/:id", (req, res) => {
   let id = req.params.id;
   // set chatroom to find id method, then check if it doesent return -1 and THEN splice chatRooms on index
   for (let index in history.chatRooms) {
@@ -66,16 +66,16 @@ app.delete("/chat/:id", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  if (req.body) {
-    // check if it works
-    //res.staus(200).send(history);
-  }
+  res.status(200).send("connected");
+});
+
+app.get("/chats", (req, res) => {
   console.log(history);
   res.status(200).send(history);
   //res.status(500).end();
 });
 
-app.get("/chat/:id", (req, res) => {
+app.get("/chats/:id", (req, res) => {
   let id = req.params.id;
   console.log(id);
   let body = req.body;
