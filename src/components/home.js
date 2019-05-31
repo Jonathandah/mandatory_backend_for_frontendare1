@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import {
   Route,
   Link,
@@ -8,28 +8,27 @@ import {
 import { login$, updateUserLogin } from "../store/storeLogin";
 import axios from "axios";
 import "./css/home.css";
+import Modal from "./modal";
+import { dispatch } from "rxjs/internal/observable/pairs";
 
-function modal() {
-  return (
-    <div className="modal">
-      <main className="modal__container">
-        <header className="modal__container__header">
-          <h3 className="modal__container__header__text">Add Chatroom</h3>
-        </header>
-        <div className="modal__container__content">
-          <button>cancel</button>
-          <button>Submit</button>
-        </div>
-      </main>
-    </div>
-  );
+function reducer(state, action) {
+  switch (action.type) {
+    case "show_modal":
+      return {
+        ...state,
+        showModal: !state.showModal ? true : false
+      };
+  }
 }
 
 function Home() {
   let [roomName, updateRoomName] = useState("nameless :(");
   let [chatRoomData, updateChatRoomData] = useState(null);
   let [login, updateLogin] = useState(login$.value);
-  let [showModal, updateShowModal] = useState(false);
+
+  let [state, dispatch] = useReducer(reducer, {
+    showModal: false
+  });
 
   useEffect(() => {
     axios
@@ -57,6 +56,7 @@ function Home() {
 */
 
   function listRooms(chatRoom) {
+    //gör till en komponent?
     return (
       <li key={chatRoom.id}>
         <Link to={`/${chatRoom.id}`}>{chatRoom.name}</Link>
@@ -71,13 +71,16 @@ function Home() {
   return (
     <Router>
       <div className="Home">
-        {showModal ? modal() : null}
+        {state.showModal ? <Modal dispatch={dispatch} /> : null}
         <header className="Home__header">{<h2>Chat</h2>}</header>
         <main className="Home__main">
           <div className="Home__main__sidebar">
             <span className="Home__main__sidebar__header">
               <p className="Home__main__sidebar__header__title">Chats</p>
-              <button className="Home__main__sidebar__header__createRoomButton">
+              <button
+                className="Home__main__sidebar__header__createRoomButton"
+                onClick={() => dispatch({ type: "show_modal" })}
+              >
                 +
               </button>
             </span>
