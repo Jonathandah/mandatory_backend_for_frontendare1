@@ -18,6 +18,7 @@ setInterval(() => {
 
 app.post("/chats/add", (req, res) => {
   //skapa nytt rum
+  //fixa valedering för värdena som skickas in och om man glömer att skicka in någon nyckel, gäller alla post anrop
   let body = req.body;
   let chatRoom = {
     id: uuid(),

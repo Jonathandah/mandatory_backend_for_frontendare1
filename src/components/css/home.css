@@ -18,10 +18,3 @@
   display: flex;
   flex-direction: row;
 }
-
-.Home__main__sidebar {
-  height: 100%;
-  width: 15%;
-  border-right: 1px solid black;
-  display: flex;
-}
