@@ -14,7 +14,7 @@ setInterval(() => {
     if (err) throw err;
     console.log("done with fs writeFile", history);
   });
-}, 5000);
+}, 30000);
 
 app.post("/chats/add", (req, res) => {
   //skapa nytt rum

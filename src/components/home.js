@@ -41,19 +41,6 @@ function Home() {
       });
   }, []);
 
-  /*
-  useEffect(() => {
-    // håller koll på om url:n har bytt adress, uppdaterar isåfall med nya filer för just den andressen
-    let subscriptionLogin = login$.subscribe(login => {
-      updateUserLogin(login);
-    });
-
-    return () => {
-      subscriptionLogin.unsubscribe();
-    };
-  }, []); //vad useEffect håller koll på
-*/
-
   if (!login) {
     return <Redirect to="/login" />;
   }
@@ -61,7 +48,9 @@ function Home() {
   return (
     <div className="Home">
       {state.showModal ? <Modal dispatch={dispatch} /> : null}
-      <header className="Home__header">{<h2>Chat</h2>}</header>
+      <header className="Home__header">
+        <h2 className="Home__header__text">Chat</h2>
+      </header>
       <main className="Home__main">
         <Sidebar dispatch={dispatch} chatRoomData={chatRoomData} />
         <Chat />
