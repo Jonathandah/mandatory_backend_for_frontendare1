@@ -21,22 +21,11 @@ function reducer(state, action) {
   }
 }
 
-function loadRoom(e) {
-  let roomId = e.target.value;
-  axios
-    .get(`/chats/${roomId}`)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(error);
-    });
-}
-
 function Home() {
   //let [roomName, updateRoomName] = useState("nameless :(");
   let [chatRoomData, updateChatRoomData] = useState(null); //alla chatroom som kommer att listas vid sidebaren.
   let [login, updateLogin] = useState(login$.value);
+  let [currentRoom, updateCurrentRoom] = useState(null);
 
   let [state, dispatch] = useReducer(reducer, {
     showModal: false
@@ -53,6 +42,19 @@ function Home() {
         console.log(error);
       });
   }, []);
+
+  function loadRoom(e) {
+    let roomId = e.target.value;
+    axios
+      .get(`/chats/${roomId}`)
+      .then(response => {
+        console.log(response);
+        updateCurrentRoom(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   if (!login) {
     return <Redirect to="/login" />;
@@ -71,7 +73,7 @@ function Home() {
           chatRoomData={chatRoomData}
           loadRoom={loadRoom}
         />
-        <Chat />
+        <Chat currentRoom={currentRoom} />
       </main>
     </div>
   );

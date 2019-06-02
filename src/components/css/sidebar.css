@@ -3,4 +3,13 @@
   width: 15%;
   border-right: 1px solid black;
   display: flex;
+  flex-direction: column;
+}
+
+.Sidebar__header {
+  display: flex;
+  flex-direction: row;
+}
+
+.Sidebar__list {
 }
