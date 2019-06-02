@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { login$, updateUserLogin } from "../store/storeLogin.js";
+import { login$, updateUserLogin } from "../store/storeLogin";
+import { updateUser } from "../store/storeUser";
 import { Redirect } from "react-router-dom";
 
 function Login() {
-  let [username, updateUsername] = useState("");
+  let [username, setUsername] = useState("");
   let [login, setLogin] = useState(false);
 
   function changeUsername(e) {
-    updateUsername(e.target.value);
+    setUsername(e.target.value);
     console.log(username);
   }
 
@@ -22,6 +23,7 @@ function Login() {
     e.preventDefault();
     axios.post("/login", { user: username }).then(response => {
       console.log(response);
+      updateUser(response.data);
     });
     updateUserLogin(true);
     setLogin(true);

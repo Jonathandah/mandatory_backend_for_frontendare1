@@ -2,10 +2,12 @@ import React, { useState, useEffect, useReducer } from "react";
 import { Link } from "react-router-dom";
 import "./css/sidebar.css";
 
-function listRooms(chatRoom) {
+function listRooms(chatRoom, loadRoom) {
   return (
     <li key={chatRoom.id}>
-      <Link to={`/${chatRoom.id}`}>{chatRoom.name}</Link>
+      <button onClick={loadRoom} value={chatRoom.id}>
+        {chatRoom.name}
+      </button>
     </li>
   );
 }
@@ -24,7 +26,9 @@ function Sidebar(props) {
       </span>
       <ul className="Sidebar__list">
         {props.chatRoomData
-          ? props.chatRoomData.map(chatroom => listRooms(chatroom))
+          ? props.chatRoomData.map(chatroom =>
+              listRooms(chatroom, props.loadRoom)
+            )
           : null}
       </ul>
     </div>

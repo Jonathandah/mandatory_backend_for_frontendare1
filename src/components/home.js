@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { Redirect } from "react-router-dom";
 import { login$, updateUserLogin } from "../store/storeLogin";
+import { user$, updateUser } from "../store/storeUser";
 import axios from "axios";
 import "./css/home.css";
 import Modal from "./modal";
@@ -20,9 +21,21 @@ function reducer(state, action) {
   }
 }
 
+function loadRoom(e) {
+  let roomId = e.target.value;
+  axios
+    .get(`/chats/${roomId}`)
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
 function Home() {
   //let [roomName, updateRoomName] = useState("nameless :(");
-  let [chatRoomData, updateChatRoomData] = useState(null);
+  let [chatRoomData, updateChatRoomData] = useState(null); //alla chatroom som kommer att listas vid sidebaren.
   let [login, updateLogin] = useState(login$.value);
 
   let [state, dispatch] = useReducer(reducer, {
@@ -50,9 +63,14 @@ function Home() {
       {state.showModal ? <Modal dispatch={dispatch} /> : null}
       <header className="Home__header">
         <h2 className="Home__header__text">Chat</h2>
+        <p className="Home__header__user">User: {user$.value}</p>
       </header>
       <main className="Home__main">
-        <Sidebar dispatch={dispatch} chatRoomData={chatRoomData} />
+        <Sidebar
+          dispatch={dispatch}
+          chatRoomData={chatRoomData}
+          loadRoom={loadRoom}
+        />
         <Chat />
       </main>
     </div>
