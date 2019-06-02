@@ -24,7 +24,7 @@ function reducer(state, action) {
 function Home() {
   //let [roomName, updateRoomName] = useState("nameless :(");
   let [chatRoomData, updateChatRoomData] = useState(null); //alla chatroom som kommer att listas vid sidebaren.
-  let [login, updateLogin] = useState(login$.value);
+  //let [login, updateLogin] = useState(login$.value);
   let [currentRoom, updateCurrentRoom] = useState(null);
 
   let [state, dispatch] = useReducer(reducer, {
@@ -56,7 +56,7 @@ function Home() {
       });
   }
 
-  if (!login) {
+  if (!login$.value) {
     return <Redirect to="/login" />;
   }
 

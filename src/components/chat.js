@@ -32,7 +32,11 @@ function Chat(props) {
 
   return (
     <div className="Chat">
-      <header className="Chat__header">{/*Header*/}</header>
+      <header className="Chat__header">
+        <h2 className="Chat__header__title">
+          {!currentRoom ? null : currentRoom.name}
+        </h2>
+      </header>
       <main className="Chat__main">
         <ul className="Chat__main__messagesList">
           {!currentRoom
