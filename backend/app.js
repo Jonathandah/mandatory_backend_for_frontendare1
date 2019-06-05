@@ -12,7 +12,6 @@ function writeFile(file) {
   if (file === "history") {
     fs.writeFile(`./history.json`, JSON.stringify(history), function(err) {
       if (err) throw err;
-      console.log("done with fs writeFile", history);
     });
   } else {
     fs.writeFile(`./users.json`, JSON.stringify(users), function(err) {
@@ -39,11 +38,13 @@ app.post("/chats/add", (req, res) => {
   res.status("200").send(chatRoom);
 });
 
-app.post("/chats/:id/message", (req, res) => {
+app.post("/chats/:roomId/message", (req, res) => {
   //posta nytt meddelande
-  let id = req.params.id;
-  let body = req.body; //borde det skickas i body eller parram ? fråga viktor.
+  let id = req.params.roomId;
+  let body = req.body;
   for (let index in history.chatRooms) {
+    console.log("history", history.chatRooms[index].id);
+    console.log("posting", id);
     if (history.chatRooms[index].id === id) {
       let message = {
         from: body.user,

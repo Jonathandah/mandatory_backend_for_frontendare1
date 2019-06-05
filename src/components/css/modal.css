@@ -1,0 +1,19 @@
+.Modal {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.411);
+}
+
+.Modal__container {
+  background: white;
+  display: flex;
+  width: 30%;
+  height: 40%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

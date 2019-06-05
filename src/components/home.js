@@ -22,7 +22,7 @@ function reducer(state, action) {
 }
 
 function Home() {
-  //let [roomName, updateRoomName] = useState("nameless :(");
+  let [roomName, updateRoomName] = useState("");
   let [chatRoomData, updateChatRoomData] = useState(null); //alla chatroom som kommer att listas vid sidebaren.
   //let [login, updateLogin] = useState(login$.value);
   let [currentRoom, updateCurrentRoom] = useState(null);
@@ -56,13 +56,31 @@ function Home() {
       });
   }
 
+  function addRoom(e) {
+    axios
+      .post("/chats/add", { name: roomName })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   if (!login$.value) {
     return <Redirect to="/login" />;
   }
 
   return (
     <div className="Home">
-      {state.showModal ? <Modal dispatch={dispatch} /> : null}
+      {state.showModal ? (
+        <Modal
+          dispatch={dispatch}
+          updateRoomName={updateRoomName}
+          addRoom={addRoom}
+          roomName={roomName}
+        />
+      ) : null}
       <header className="Home__header">
         <h2 className="Home__header__text">Chat</h2>
         <p className="Home__header__user">User: {user$.value}</p>

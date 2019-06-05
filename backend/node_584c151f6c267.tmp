@@ -39,11 +39,13 @@ app.post("/chats/add", (req, res) => {
   res.status("200").send(chatRoom);
 });
 
-app.post("/chats/:id/message", (req, res) => {
+app.post("/chats/:roomId/message", (req, res) => {
   //posta nytt meddelande
-  let id = req.params.id;
+  let id = req.params.roomId;
   let body = req.body; //borde det skickas i body eller parram ? fråga viktor.
   for (let index in history.chatRooms) {
+    console.log("history", history.chatRooms[index].id);
+    console.log("posting", id);
     if (history.chatRooms[index].id === id) {
       let message = {
         from: body.user,
