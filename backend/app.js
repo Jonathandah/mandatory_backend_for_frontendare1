@@ -53,7 +53,6 @@ app.post("/chats/:roomId/message", (req, res) => {
         value: body.value,
         id: uuid()
       };
-      console.log(history.chatRooms[index].uniqeUsers);
       if (!history.chatRooms[index].uniqeUsers.includes(body.user)) {
         history.chatRooms[index].uniqeUsers.push(body.user);
       }

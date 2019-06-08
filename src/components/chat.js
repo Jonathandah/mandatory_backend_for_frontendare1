@@ -14,7 +14,16 @@ function listMessages(message) {
   );
 }
 
+function listUsers(user) {
+  return (
+    <li className="Chat__sidebar__list__name" key={user}>
+      {user}
+    </li>
+  );
+}
+
 function Chat(props) {
+  let [sidebar, updateSidebar] = useState(false);
   let [message, updateMessage] = useState("");
   let currentRoom = props.currentRoom;
 
@@ -38,10 +47,27 @@ function Chat(props) {
 
   return (
     <div className="Chat">
+      {!sidebar ? null : (
+        <div className="Chat__sidebar">
+          <ul className="Chat__sidebar__list">
+            {!currentRoom
+              ? null
+              : currentRoom.uniqeUsers.map(user => listUsers(user))}
+          </ul>
+        </div>
+      )}
       <header className="Chat__header">
         <h2 className="Chat__header__title">
           {!currentRoom ? null : currentRoom.name}
         </h2>
+        <button
+          className="Chat__header__info"
+          onClick={() =>
+            !sidebar ? updateSidebar(true) : updateSidebar(false)
+          }
+        >
+          i
+        </button>
       </header>
       <main className="Chat__main">
         <ul className="Chat__main__messagesList">
