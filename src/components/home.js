@@ -44,7 +44,8 @@ function Home() {
   }, []);
 
   function loadRoom(e) {
-    let roomId = e.target.value;
+    let roomId = e.target.id;
+    console.log(roomId);
     axios
       .get(`/chats/${roomId}`)
       .then(response => {
@@ -53,6 +54,18 @@ function Home() {
       })
       .catch(error => {
         console.log(error);
+      });
+  }
+
+  function deleteRoom(e) {
+    let roomId = e.target.value;
+    axios
+      .delete(`/chats/${roomId}`)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
 
@@ -90,6 +103,7 @@ function Home() {
           dispatch={dispatch}
           chatRoomData={chatRoomData}
           loadRoom={loadRoom}
+          deleteRoom={deleteRoom}
         />
         <Chat currentRoom={currentRoom} />
       </main>

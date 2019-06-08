@@ -2,11 +2,18 @@ import React, { useState, useEffect, useReducer } from "react";
 import { Link } from "react-router-dom";
 import "./css/sidebar.css";
 
-function listRooms(chatRoom, loadRoom) {
+function listRooms(chatRoom, loadRoom, deleteRoom) {
   return (
-    <li key={chatRoom.id}>
-      <button onClick={loadRoom} value={chatRoom.id}>
+    <li className="Sidebar__list__item" key={chatRoom.id}>
+      <p
+        className="Sidebar__list__item__name"
+        onClick={loadRoom}
+        id={chatRoom.id}
+      >
         {chatRoom.name}
+      </p>
+      <button onClick={deleteRoom} value={chatRoom.id}>
+        X
       </button>
     </li>
   );
@@ -27,7 +34,7 @@ function Sidebar(props) {
       <ul className="Sidebar__list">
         {props.chatRoomData
           ? props.chatRoomData.map(chatroom =>
-              listRooms(chatroom, props.loadRoom)
+              listRooms(chatroom, props.loadRoom, props.deleteRoom)
             )
           : null}
       </ul>

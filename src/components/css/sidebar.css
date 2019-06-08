@@ -13,3 +13,13 @@
 
 .Sidebar__list {
 }
+
+.Sidebar__list__item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.Sidebar__list__item__name:hover {
+  cursor: pointer;
+}

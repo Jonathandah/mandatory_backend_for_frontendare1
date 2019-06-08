@@ -25,12 +25,14 @@ function Chat(props) {
     console.log(currentRoom.id);
     console.log(user$.value);
     console.log(message);
-    axios(`/chats/${currentRoom.id}/message`, {
-      user: user$.value,
-      value: message
-    }).then(response => {
-      console.log(response);
-    });
+    axios
+      .post(`/chats/${currentRoom.id}/message`, {
+        user: user$.value,
+        value: message
+      })
+      .then(response => {
+        console.log(response);
+      });
   }
 
   return (
