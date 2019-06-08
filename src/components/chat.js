@@ -3,15 +3,26 @@ import { Redirect, Route, BrowserRouter as Router } from "react-router-dom";
 import axios from "axios";
 import { user$ } from "../store/storeUser";
 import "./css/chat.css";
-import { returnStatement } from "@babel/types";
 
 function listMessages(message) {
-  return (
-    <li key={message.id} className="Chat__messageList__item">
-      <p className="Chat__messageList__item__user">{message.from}</p>
-      <p className="Chat__messageList__item__text">{message.value}</p>
-    </li>
-  );
+  if (user$.value === message.from) {
+    return (
+      <li
+        key={message.id}
+        className="Chat__main__messagesList__item--userMessage"
+      >
+        <p className="Chat__main__messagesList__item__user">{message.from}</p>
+        <p className="Chat__main__messagesList__item__text">{message.value}</p>
+      </li>
+    );
+  } else {
+    return (
+      <li key={message.id} className="Chat__main__messagesList__item">
+        <p className="Chat__main__messagesList__item__user">{message.from}</p>
+        <p className="Chat__main__messagesList__item__text">{message.value}</p>
+      </li>
+    );
+  }
 }
 
 function listUsers(user) {
@@ -32,17 +43,16 @@ function Chat(props) {
   }
 
   function sendMessage() {
-    console.log(currentRoom.id);
-    console.log(user$.value);
-    console.log(message);
-    axios
-      .post(`/chats/${currentRoom.id}/message`, {
-        user: user$.value,
-        value: message
-      })
-      .then(response => {
-        console.log(response);
-      });
+    if (currentRoom) {
+      axios
+        .post(`/chats/${currentRoom.id}/message`, {
+          user: user$.value,
+          value: message
+        })
+        .then(response => {
+          console.log(response);
+        });
+    }
   }
 
   return (
@@ -57,17 +67,19 @@ function Chat(props) {
         </div>
       )}
       <header className="Chat__header">
-        <h2 className="Chat__header__title">
-          {!currentRoom ? null : currentRoom.name}
-        </h2>
-        <button
-          className="Chat__header__info"
-          onClick={() =>
-            !sidebar ? updateSidebar(true) : updateSidebar(false)
-          }
-        >
-          i
-        </button>
+        {!currentRoom ? null : (
+          <>
+            <h2 className="Chat__header__title">{currentRoom.name}</h2>
+            <button
+              className="Chat__header__info"
+              onClick={() =>
+                !sidebar ? updateSidebar(true) : updateSidebar(false)
+              }
+            >
+              i
+            </button>
+          </>
+        )}
       </header>
       <main className="Chat__main">
         <ul className="Chat__main__messagesList">

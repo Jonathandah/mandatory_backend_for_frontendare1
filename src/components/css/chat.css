@@ -10,6 +10,7 @@
   width: 20%;
   height: 90%;
   background: white;
+  /*  transition: all 1s ease-in-out;*/
 }
 
 .Chat__header {
@@ -23,6 +24,30 @@
   height: 83%;
   color: white;
   background: rgb(26, 30, 50);
+  display: flex;
+  overflow-x: hidden;
+}
+
+.Chat__main__messagesList {
+  width: 100%;
+  height: 100%;
+}
+
+.Chat__main__messagesList__item {
+  list-style: none;
+  width: 40%;
+  margin-bottom: 5%;
+  border: 1px solid rgb(56, 62, 93);
+  word-break: break-word;
+}
+.Chat__main__messagesList__item--userMessage {
+  margin-left: 50%;
+  list-style: none;
+  width: 40%;
+  margin-bottom: 5%;
+  border: 1px solid rgb(56, 62, 93);
+  background: red;
+  word-break: break-word;
 }
 
 .Chat__inputField {

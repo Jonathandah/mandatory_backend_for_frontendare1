@@ -18,6 +18,11 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  transition: all 1s ease-in-out;
+}
+
+.Sidebar__list__item:hover {
+  background: rgba(56, 62, 93, 0.226);
 }
 
 .Sidebar__list__item__name:hover {
