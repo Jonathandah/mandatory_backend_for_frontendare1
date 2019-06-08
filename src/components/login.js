@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
-import { login$, updateUserLogin } from "../store/storeLogin";
+import { login$, updateLogin } from "../store/storeLogin";
 import { updateUser } from "../store/storeUser";
 import { Redirect } from "react-router-dom";
 
@@ -38,7 +38,7 @@ function Login() {
       console.log(response);
       updateUser(response.data);
       if (response.data === username) {
-        updateUserLogin(true);
+        updateLogin(true);
         setLogin(true);
       }
     });

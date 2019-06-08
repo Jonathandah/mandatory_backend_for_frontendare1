@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { Redirect } from "react-router-dom";
-import { login$, updateUserLogin } from "../store/storeLogin";
+import { login$, updateLogin } from "../store/storeLogin";
 import { user$, updateUser } from "../store/storeUser";
 import axios from "axios";
 import "./css/home.css";
@@ -80,6 +80,11 @@ function Home() {
       });
   }
 
+  function logout(e) {
+    updateLogin(null);
+    updateUser(null);
+  }
+
   if (!login$.value) {
     return <Redirect to="/login" />;
   }
@@ -97,6 +102,9 @@ function Home() {
       <header className="Home__header">
         <h2 className="Home__header__text">Chat</h2>
         <p className="Home__header__user">User: {user$.value}</p>
+        <button className="Home__header__logout" onClick={logout}>
+          Logout
+        </button>
       </header>
       <main className="Home__main">
         <Sidebar

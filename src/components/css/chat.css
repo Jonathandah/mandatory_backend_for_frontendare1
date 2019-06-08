@@ -4,6 +4,12 @@
   flex-direction: column;
 }
 
+.Chat__sidebar {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 .Chat__header {
   width: 100%;
   height: 10%;
@@ -12,12 +18,16 @@
 
 .Chat__main {
   width: 100%;
-  height: 70%;
+  height: 83%;
+  color: white;
   background: rgb(26, 30, 50);
 }
 
 .Chat__inputField {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  height: 20%;
+  height: 7%;
   background: blue;
 }

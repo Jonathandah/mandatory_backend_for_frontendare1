@@ -32,6 +32,7 @@ app.post("/chats/add", (req, res) => {
   let chatRoom = {
     id: uuid(),
     name: body.name,
+    uniqeUsers: [],
     arrayMessages: []
   };
   history.chatRooms.push(chatRoom);
@@ -40,6 +41,7 @@ app.post("/chats/add", (req, res) => {
 
 app.post("/chats/:roomId/message", (req, res) => {
   //posta nytt meddelande
+  //skapa en array med unika användare
   let id = req.params.roomId;
   let body = req.body;
   for (let index in history.chatRooms) {
@@ -51,6 +53,10 @@ app.post("/chats/:roomId/message", (req, res) => {
         value: body.value,
         id: uuid()
       };
+      console.log(history.chatRooms[index].uniqeUsers);
+      if (!history.chatRooms[index].uniqeUsers.includes(body.user)) {
+        history.chatRooms[index].uniqeUsers.push(body.user);
+      }
       history.chatRooms[index].arrayMessages.push(message);
       res.status(200).send(message);
       return;

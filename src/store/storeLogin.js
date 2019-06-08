@@ -4,7 +4,7 @@ export const login$ = new BehaviorSubject(
   window.localStorage.getItem("login") || null
 );
 
-export function updateUserLogin(newLogin) {
+export function updateLogin(newLogin) {
   if (!newLogin) {
     window.localStorage.removeItem("login");
   } else {
