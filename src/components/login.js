@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { login$, updateLogin } from "../store/storeLogin";
 import { updateUser } from "../store/storeUser";
 import { Redirect } from "react-router-dom";
-
-function reducer(state, action) {}
+import "./css/login.css";
 
 function Login() {
   let [username, setUsername] = useState("");
   let [login, setLogin] = useState(false);
   let [openRegister, updateOpenRegister] = useState(false);
-  let [state, dispatch] = useReducer(reducer, {
-    showModal: false
-  });
 
   function changeUsername(e) {
     setUsername(e.target.value);
@@ -49,29 +45,53 @@ function Login() {
   ) : (
     <div className="Login">
       {openRegister ? (
-        <div>
-          <p>Register</p>
-          <form onSubmit={onRegister}>
-            <p>Username</p>
-            <input onChange={changeUsername} />
-            <button type="submit">Register</button>
-          </form>
+        <div className="Login__modal">
+          <main className="Login__modal__content">
+            <p className="Login__modal__content__text">Register</p>
+            <form className="Login__modal__content__form" onSubmit={onRegister}>
+              <p className="Login__modal__content__text">Username</p>
+              <input
+                className="Login__modal__content__input"
+                onChange={changeUsername}
+              />
+              <button
+                className="Login__modal__content__registerButton"
+                type="submit"
+              >
+                Register
+              </button>
+            </form>
+          </main>
         </div>
       ) : null}
 
-      <p>Login</p>
-      <form onSubmit={onSubmit}>
-        <input onChange={changeUsername} value={username} required />
-        <button type="submit">Login</button>
-      </form>
-      <button
-        className="Login__register"
-        onClick={() =>
-          !openRegister ? updateOpenRegister(true) : updateOpenRegister(false)
-        }
-      >
-        Register
-      </button>
+      <div className="Login__container">
+        <form className="Login__container__form" onSubmit={onSubmit}>
+          <p className="Login__container__text">Login</p>
+          <input
+            className="Login__container__input"
+            onChange={changeUsername}
+            value={username}
+            required
+          />
+          <button className="Login__container__submitButton" type="submit">
+            Login
+          </button>
+        </form>
+        <div className="Login__container__box">
+          <p className="Login__container__box__text">Don't have an account?</p>
+          <button
+            className="Login__container__box__modal"
+            onClick={() =>
+              !openRegister
+                ? updateOpenRegister(true)
+                : updateOpenRegister(false)
+            }
+          >
+            Register
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

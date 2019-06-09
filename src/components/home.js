@@ -58,6 +58,7 @@ function Home() {
   }
 
   function deleteRoom(e) {
+    console.log("hafka kh");
     let roomId = e.target.value;
     axios
       .delete(`/chats/${roomId}`)
