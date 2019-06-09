@@ -64,10 +64,11 @@ app.get("/login/:userid", (req, res) => {
           return;
         }
       }
-    } else {
       res.status(401).send("user not found");
       return;
     }
+    res.status(401).send("user not found");
+    return;
   }
   res.status(400).end();
 });
@@ -101,6 +102,12 @@ app.post("/chats/add", (req, res) => {
   //fixa valedering för värdena som skickas in och om man glömer att skicka in någon nyckel, gäller alla post anrop
   let body = req.body;
   if (body.name) {
+    for (let room of history.chatRooms) {
+      if (room.name === body.name) {
+        res.status(409).send("room already exists");
+        return;
+      }
+    }
     let chatRoom = {
       id: uuid(),
       name: body.name,
@@ -146,6 +153,7 @@ app.post("/chats/:roomId/message", (req, res) => {
 
 app.delete("/chats/:id", (req, res) => {
   let id = req.params.id;
+  console.log(id);
   // set chatroom to find id method, then check if it doesent return -1 and THEN splice chatRooms on index
   if (id) {
     for (let index in history.chatRooms) {
@@ -154,9 +162,9 @@ app.delete("/chats/:id", (req, res) => {
         res.status(200).end();
         return;
       }
-      res.status(404).send("room not found");
-      return;
     }
+    res.status(404).send("room not found");
+    return;
   }
   res.status(400).end();
 });

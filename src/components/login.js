@@ -9,6 +9,7 @@ function Login() {
   let [username, setUsername] = useState("");
   let [login, setLogin] = useState(false);
   let [openRegister, updateOpenRegister] = useState(false);
+  let [errMsg, updaErrMsg] = useState(false);
 
   function changeUsername(e) {
     setUsername(e.target.value);
@@ -23,21 +24,44 @@ function Login() {
 
   function onRegister(e) {
     e.preventDefault();
-    axios.post("/register", { user: username }).then(response => {
-      console.log(response.data);
-    });
+    axios
+      .post("/register", { user: username })
+      .then(response => {
+        console.log(response.data);
+        updateOpenRegister(false);
+        setUsername("");
+        updaErrMsg(false);
+      })
+      .catch(err => {
+        console.log(err.response.status);
+        if (err.response.status === 401) updaErrMsg(true);
+      });
   }
 
   function onSubmit(e) {
     e.preventDefault();
-    axios.get(`/login/${username}`).then(response => {
-      console.log(response);
-      updateUser(response.data);
-      if (response.data === username) {
-        updateLogin(true);
-        setLogin(true);
-      }
-    });
+    console.log(username);
+    axios
+      .get(`/login/${username}`)
+      .then(response => {
+        console.log(response);
+        updateUser(response.data);
+        if (response.data === username) {
+          updateLogin(true);
+          setLogin(true);
+        }
+      })
+      .catch(err => {
+        console.log(err.response.status);
+        if (err.response.status === 401) updaErrMsg(true);
+      });
+  }
+
+  function onCancel() {
+    console.log("asfaf");
+    updateOpenRegister(false);
+    setUsername("");
+    updaErrMsg(false);
   }
 
   return login ? (
@@ -50,6 +74,11 @@ function Login() {
             <p className="Login__modal__content__text">Register</p>
             <form className="Login__modal__content__form" onSubmit={onRegister}>
               <p className="Login__modal__content__text">Username</p>
+              {errMsg ? (
+                <p className="Login__modal__content__text--error">
+                  This name is already taken
+                </p>
+              ) : null}
               <input
                 className="Login__modal__content__input"
                 onChange={changeUsername}
@@ -61,6 +90,12 @@ function Login() {
                 Register
               </button>
             </form>
+            <button
+              className="Login__modal__content__cancel"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
           </main>
         </div>
       ) : null}
@@ -68,6 +103,9 @@ function Login() {
       <div className="Login__container">
         <form className="Login__container__form" onSubmit={onSubmit}>
           <p className="Login__container__text">Login</p>
+          {errMsg ? (
+            <p className="Login__container__text--error">User not found</p>
+          ) : null}
           <input
             className="Login__container__input"
             onChange={changeUsername}
@@ -82,11 +120,12 @@ function Login() {
           <p className="Login__container__box__text">Don't have an account?</p>
           <button
             className="Login__container__box__modal"
-            onClick={() =>
+            onClick={() => {
+              updaErrMsg(false);
               !openRegister
                 ? updateOpenRegister(true)
-                : updateOpenRegister(false)
-            }
+                : updateOpenRegister(false);
+            }}
           >
             Register
           </button>

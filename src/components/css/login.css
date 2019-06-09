@@ -19,7 +19,7 @@
 }
 
 .Login__container__form {
-  margin-top: 50%;
+  margin-top: 20%;
 }
 
 .Login__container__box {
@@ -47,4 +47,14 @@
   flex-direction: column;
   background: white;
   box-shadow: #3e3d3d4f 0px 7px 9px 0px;
+}
+
+.Login__modal__content__text--error {
+  color: red;
+  font-size: 80%;
+}
+
+.Login__container__text--error {
+  color: red;
+  font-size: 80%;
 }

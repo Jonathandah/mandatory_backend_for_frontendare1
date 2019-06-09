@@ -26,6 +26,7 @@ function Home() {
   let [chatRoomData, updateChatRoomData] = useState(null); //alla chatroom som kommer att listas vid sidebaren.
   //let [login, updateLogin] = useState(login$.value);
   let [currentRoom, updateCurrentRoom] = useState(null);
+  let [loggedIn, updateLoggedIn] = useState(user$.value);
 
   let [state, dispatch] = useReducer(reducer, {
     showModal: false
@@ -71,6 +72,7 @@ function Home() {
   }
 
   function addRoom(e) {
+    e.preventDefault();
     axios
       .post("/chats/add", { name: roomName })
       .then(response => {
@@ -84,6 +86,7 @@ function Home() {
   function logout(e) {
     updateLogin(null);
     updateUser(null);
+    updateLoggedIn(null);
   }
 
   if (!login$.value) {
