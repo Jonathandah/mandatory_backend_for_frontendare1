@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { login$, updateLogin } from "../store/storeLogin";
+//import { login$, updateLogin } from "../store/storeLogin";
 import { updateUser } from "../store/storeUser";
 import { Redirect } from "react-router-dom";
 import "./css/login.css";
@@ -15,12 +15,6 @@ function Login() {
     setUsername(e.target.value);
     console.log(username);
   }
-
-  useEffect(() => {
-    if (login$.value !== null) {
-      setLogin(true);
-    }
-  }, []);
 
   function onRegister(e) {
     e.preventDefault();
@@ -46,10 +40,7 @@ function Login() {
       .then(response => {
         console.log(response);
         updateUser(response.data);
-        if (response.data === username) {
-          updateLogin(true);
-          setLogin(true);
-        }
+        setLogin(true);
       })
       .catch(err => {
         console.log(err.response.status);

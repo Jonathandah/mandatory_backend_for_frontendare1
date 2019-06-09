@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { Redirect } from "react-router-dom";
-import { login$, updateLogin } from "../store/storeLogin";
 import { user$, updateUser } from "../store/storeUser";
 import axios from "axios";
+import io from "socket.io-client";
 import "./css/home.css";
 import Modal from "./modal";
 import Sidebar from "./sidebar";
@@ -24,7 +24,6 @@ function reducer(state, action) {
 function Home() {
   let [roomName, updateRoomName] = useState("");
   let [chatRoomData, updateChatRoomData] = useState(null); //alla chatroom som kommer att listas vid sidebaren.
-  //let [login, updateLogin] = useState(login$.value);
   let [currentRoom, updateCurrentRoom] = useState(null);
   let [loggedIn, updateLoggedIn] = useState(user$.value);
 
@@ -84,12 +83,11 @@ function Home() {
   }
 
   function logout(e) {
-    updateLogin(null);
     updateUser(null);
     updateLoggedIn(null);
   }
 
-  if (!login$.value) {
+  if (!loggedIn) {
     return <Redirect to="/login" />;
   }
 
