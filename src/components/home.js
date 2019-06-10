@@ -35,14 +35,6 @@ function Home() {
   });
 
   useEffect(() => {
-    /*
-    if (currentRoom) {
-      if (!oldRoom.id === currentRoom.id) {
-        oldRoom.id = currentRoom.id;
-        socket.emit("leave", oldRoom.id);
-      }
-    }
-*/
     if (currentRoom) {
       socket.on("new_message", data => {
         if (currentRoom.id === data.id) {
@@ -62,7 +54,7 @@ function Home() {
   }, [currentRoom]);
 
   useEffect(() => {
-    axios
+    axios ///körs endast första gången.
       .get("/chats")
       .then(response => {
         console.log(response);
@@ -73,7 +65,9 @@ function Home() {
       });
 
     socket.on("new_room", data => {
+      //körs resten av gångerna
       updateChatRooms(c => {
+        //c==chatroom;
         if (c) {
           return c.concat(data.chatRoom);
         }
