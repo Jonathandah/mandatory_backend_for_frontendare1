@@ -12,16 +12,19 @@ const server = app.listen(port, () => console.log("listening on port", port));
 const io = socket(server);
 
 let userCount = 0;
-
+/*
 io.on("connection", socket => {
   userCount++;
+  console.log(userCount);
   console.log("connection established - " + socket.id);
 
   socket.on("chat", data => {
+    console.log(data);
     io.sockets.emit("chat", data);
   });
 
   socket.on("user-connect", data => {
+    console.log(data);
     io.sockets.emit("user-connect", data);
   });
 
@@ -30,8 +33,25 @@ io.on("connection", socket => {
     io.sockets.emit("user-disconnect", data);
     console.log(userCount);
   });
-});
 
+  socket.on("join", data => {
+    console.log(data);
+    socket.join(data);
+  });
+
+  socket.on("leave", data => {
+    socket.leave(data);
+    console.log("2gsge");
+  });
+
+  socket.on("new_message", (data, cb) => {
+    //https://socket.io/docs/rooms-and-namespaces/
+    console.log(data);
+    cb(data);
+    socket.in(data.id).emit("new_message", data);
+  });
+});
+*/
 function writeFile(file) {
   if (file === "history") {
     fs.writeFile(`./history.json`, JSON.stringify(history), function(err) {
@@ -165,6 +185,7 @@ app.post("/chats/:roomId/message", (req, res) => {
         }
         room.arrayMessages.push(message);
         res.status(201).send(message);
+        io.emit("new_message", { id, message });
         return;
       }
     }

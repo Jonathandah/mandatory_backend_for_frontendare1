@@ -8,6 +8,8 @@ import Modal from "./modal";
 import Sidebar from "./sidebar";
 import Chat from "./chat";
 
+const socket = io.connect("http://localhost:8000");
+
 function reducer(state, action) {
   switch (action.type) {
     case "show_modal":
@@ -20,6 +22,7 @@ function reducer(state, action) {
       return;
   }
 }
+//let oldRoom = { id: "" };
 
 function Home() {
   let [roomName, updateRoomName] = useState("");
@@ -32,6 +35,21 @@ function Home() {
   });
 
   useEffect(() => {
+    /*
+    if (currentRoom) {
+      if (!oldRoom.id === currentRoom.id) {
+        oldRoom.id = currentRoom.id;
+        socket.emit("leave", oldRoom.id);
+      }
+    }
+*/
+    if (currentRoom) {
+      socket.on("new_message", data => {
+        if (currentRoom.id === data.id) {
+          console.log(data);
+        }
+      });
+    }
     axios
       .get("/chats")
       .then(response => {
@@ -41,15 +59,15 @@ function Home() {
       .catch(error => {
         console.log(error);
       });
-  }, []);
+  }, [currentRoom]);
 
   function loadRoom(e) {
     let roomId = e.target.id;
+    socket.emit("join", roomId);
     console.log(roomId);
     axios
       .get(`/chats/${roomId}`)
       .then(response => {
-        console.log(response);
         updateCurrentRoom(response.data);
       })
       .catch(error => {
@@ -115,7 +133,7 @@ function Home() {
           loadRoom={loadRoom}
           deleteRoom={deleteRoom}
         />
-        <Chat currentRoom={currentRoom} />
+        <Chat currentRoom={currentRoom} socket={socket} />
       </main>
     </div>
   );

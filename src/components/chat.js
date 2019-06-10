@@ -51,6 +51,16 @@ function Chat(props) {
         })
         .then(response => {
           console.log(response);
+          props.socket.emit(
+            "new_message",
+            {
+              ...response.data,
+              id: currentRoom.id
+            },
+            function(res) {
+              console.log(res);
+            }
+          );
         });
     }
   }
