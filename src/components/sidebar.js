@@ -32,8 +32,8 @@ function Sidebar(props) {
         </button>
       </span>
       <ul className="Sidebar__list">
-        {props.chatRoomData
-          ? props.chatRoomData.map(chatroom =>
+        {props.chatRooms
+          ? props.chatRooms.map(chatroom =>
               listRooms(chatroom, props.loadRoom, props.deleteRoom)
             )
           : null}

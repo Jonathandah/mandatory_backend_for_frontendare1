@@ -160,6 +160,7 @@ app.post("/chats/add", (req, res) => {
     };
     history.chatRooms.push(chatRoom);
     res.status(201).send(chatRoom);
+    io.emit("new_room", { chatRoom });
     return;
   }
   res.status(400).end();

@@ -51,6 +51,7 @@ function Chat(props) {
         })
         .then(response => {
           console.log(response);
+          /*
           props.socket.emit(
             "new_message",
             {
@@ -61,6 +62,7 @@ function Chat(props) {
               console.log(res);
             }
           );
+          */
         });
     }
   }

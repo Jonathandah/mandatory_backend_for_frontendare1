@@ -26,7 +26,7 @@ function reducer(state, action) {
 
 function Home() {
   let [roomName, updateRoomName] = useState("");
-  let [chatRoomData, updateChatRoomData] = useState(null); //alla chatroom som kommer att listas vid sidebaren.
+  let [chatRooms, updateChatRooms] = useState(null); //alla chatroom som kommer att listas vid sidebaren.
   let [currentRoom, updateCurrentRoom] = useState(null);
   let [loggedIn, updateLoggedIn] = useState(user$.value);
 
@@ -47,19 +47,44 @@ function Home() {
       socket.on("new_message", data => {
         if (currentRoom.id === data.id) {
           console.log(data);
+          updateCurrentRoom(c => {
+            return {
+              ...c,
+              arrayMessages: c.arrayMessages.concat(data.message)
+            };
+          });
         }
       });
     }
+    return () => {
+      socket.off("new_message");
+    };
+  }, [currentRoom]);
+
+  useEffect(() => {
     axios
       .get("/chats")
       .then(response => {
         console.log(response);
-        updateChatRoomData(response.data.chatRooms);
+        updateChatRooms(response.data.chatRooms);
       })
       .catch(error => {
         console.log(error);
       });
-  }, [currentRoom]);
+
+    socket.on("new_room", data => {
+      updateChatRooms(c => {
+        if (c) {
+          return c.concat(data.chatRoom);
+        }
+        return c;
+      });
+    });
+
+    return () => {
+      socket.off("new_room");
+    };
+  }, []);
 
   function loadRoom(e) {
     let roomId = e.target.id;
@@ -129,7 +154,7 @@ function Home() {
       <main className="Home__main">
         <Sidebar
           dispatch={dispatch}
-          chatRoomData={chatRoomData}
+          chatRooms={chatRooms}
           loadRoom={loadRoom}
           deleteRoom={deleteRoom}
         />
