@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-//import { login$, updateLogin } from "../store/storeLogin";
 import { updateUser } from "../store/storeUser";
 import { Redirect } from "react-router-dom";
 import "./css/login.css";
 
 function Login() {
-  let [username, setUsername] = useState("");
-  let [login, setLogin] = useState(false);
+  let [username, updateUsername] = useState("");
+  let [login, updateLogin] = useState(false);
   let [openRegister, updateOpenRegister] = useState(false);
-  let [errMsg, updaErrMsg] = useState(false);
+  let [errMsg, updateErrMsg] = useState(false);
 
   function changeUsername(e) {
-    setUsername(e.target.value);
-    console.log(username);
+    updateUsername(e.target.value);
   }
 
   function onRegister(e) {
@@ -21,38 +19,32 @@ function Login() {
     axios
       .post("/register", { user: username })
       .then(response => {
-        console.log(response.data);
         updateOpenRegister(false);
-        setUsername("");
-        updaErrMsg(false);
+        updateUsername("");
+        updateErrMsg(false);
       })
       .catch(err => {
-        console.log(err.response.status);
-        if (err.response.status === 401) updaErrMsg(true);
+        if (err.response.status === 401) updateErrMsg(true);
       });
   }
 
-  function onSubmit(e) {
+  function onLogin(e) {
     e.preventDefault();
-    console.log(username);
     axios
       .get(`/login/${username}`)
       .then(response => {
-        console.log(response);
         updateUser(response.data);
-        setLogin(true);
+        updateLogin(true);
       })
       .catch(err => {
-        console.log(err.response.status);
-        if (err.response.status === 401) updaErrMsg(true);
+        if (err.response.status === 401) updateErrMsg(true);
       });
   }
 
   function onCancel() {
-    console.log("asfaf");
     updateOpenRegister(false);
-    setUsername("");
-    updaErrMsg(false);
+    updateUsername("");
+    updateErrMsg(false);
   }
 
   return login ? (
@@ -92,7 +84,7 @@ function Login() {
       ) : null}
 
       <div className="Login__container">
-        <form className="Login__container__form" onSubmit={onSubmit}>
+        <form className="Login__container__form" onSubmit={onLogin}>
           <p className="Login__container__text">Login</p>
           {errMsg ? (
             <p className="Login__container__text--error">User not found</p>
@@ -112,7 +104,7 @@ function Login() {
           <button
             className="Login__container__box__modal"
             onClick={() => {
-              updaErrMsg(false);
+              updateErrMsg(false);
               !openRegister
                 ? updateOpenRegister(true)
                 : updateOpenRegister(false);

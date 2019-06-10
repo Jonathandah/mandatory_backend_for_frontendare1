@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { user$, updateUser } from "../store/storeUser";
 import axios from "axios";
@@ -10,29 +10,12 @@ import Chat from "./chat";
 
 const socket = io.connect("http://localhost:8000");
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "show_modal":
-      return {
-        ...state,
-        showModal: !state.showModal ? true : false
-      };
-    default:
-      console.log("something went wrong");
-      return;
-  }
-}
-//let oldRoom = { id: "" };
-
 function Home() {
   let [roomName, updateRoomName] = useState("");
   let [chatRooms, updateChatRooms] = useState(null); //alla chatroom som kommer att listas vid sidebaren.
   let [currentRoom, updateCurrentRoom] = useState(null);
   let [loggedIn, updateLoggedIn] = useState(user$.value);
-
-  let [state, dispatch] = useReducer(reducer, {
-    showModal: false
-  });
+  let [modal, updateModal] = useState(false);
 
   useEffect(() => {
     if (currentRoom) {
@@ -75,8 +58,13 @@ function Home() {
       });
     });
 
+    socket.on("delete_room", data => {
+      updateChatRooms(data.chatRooms);
+    });
+
     return () => {
       socket.off("new_room");
+      socket.off("delete_room");
     };
   }, []);
 
@@ -113,6 +101,7 @@ function Home() {
       .post("/chats/add", { name: roomName })
       .then(response => {
         console.log(response.data);
+        updateModal(false);
       })
       .catch(err => {
         console.log(err);
@@ -130,9 +119,9 @@ function Home() {
 
   return (
     <div className="Home">
-      {state.showModal ? (
+      {modal ? (
         <Modal
-          dispatch={dispatch}
+          updateModal={updateModal}
           updateRoomName={updateRoomName}
           addRoom={addRoom}
           roomName={roomName}
@@ -147,7 +136,7 @@ function Home() {
       </header>
       <main className="Home__main">
         <Sidebar
-          dispatch={dispatch}
+          updateModal={updateModal}
           chatRooms={chatRooms}
           loadRoom={loadRoom}
           deleteRoom={deleteRoom}

@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import "./css/sidebar.css";
 
 function listRooms(chatRoom, loadRoom, deleteRoom) {
@@ -26,7 +25,7 @@ function Sidebar(props) {
         <p className="Sidebar__header__title">Chats</p>
         <button
           className="Sidebar__header__createRoomButton"
-          onClick={() => props.dispatch({ type: "show_modal" })}
+          onClick={() => props.updateModal(true)}
         >
           +
         </button>

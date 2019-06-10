@@ -199,13 +199,14 @@ app.post("/chats/:roomId/message", (req, res) => {
 
 app.delete("/chats/:id", (req, res) => {
   let id = req.params.id;
-  console.log(id);
+  let chatRooms = history.chatRooms;
   // set chatroom to find id method, then check if it doesent return -1 and THEN splice chatRooms on index
   if (id) {
-    for (let index in history.chatRooms) {
-      if (history.chatRooms[index].id === id) {
-        history.chatRooms.splice(index, 1);
+    for (let index in chatRooms) {
+      if (chatRooms[index].id === id) {
+        chatRooms.splice(index, 1);
         res.status(200).end();
+        io.emit("delete_room", { chatRooms });
         return;
       }
     }

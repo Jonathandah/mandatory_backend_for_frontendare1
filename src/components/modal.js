@@ -15,7 +15,7 @@ function Modal(props) {
         <div className="Modal__container__content">
           <button
             className="Modal__container__content__cancel"
-            onClick={() => props.dispatch({ type: "show_modal" })}
+            onClick={() => props.updateModal(false)}
           >
             Cancel
           </button>
