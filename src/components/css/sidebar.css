@@ -12,6 +12,7 @@
 }
 
 .Sidebar__list {
+  overflow-x: hidden;
 }
 
 .Sidebar__list__item {

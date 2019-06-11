@@ -1,5 +1,6 @@
 import React from "react";
 import "./css/modal.css";
+import { removePropertiesDeep } from "@babel/types";
 function Modal(props) {
   return (
     <div className="Modal">
@@ -7,7 +8,10 @@ function Modal(props) {
         <header className="Modal__container__header">
           <h3 className="Modal__container__header__text">Add Chatroom</h3>
         </header>
-        <p>Chatroom name:</p>
+        <p className="Modal__container__text">Chatroom name:</p>
+        {props.errMsg ? (
+          <p className="Modal__container__text--error">This name is taken</p>
+        ) : null}
         <input
           onChange={e => props.updateRoomName(e.target.value)}
           value={props.roomName}
@@ -15,7 +19,11 @@ function Modal(props) {
         <div className="Modal__container__content">
           <button
             className="Modal__container__content__cancel"
-            onClick={() => props.updateModal(false)}
+            onClick={() => {
+              props.updateRoomName("");
+              props.updateErrMsg(false);
+              props.updateModal(false);
+            }}
           >
             Cancel
           </button>

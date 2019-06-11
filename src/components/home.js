@@ -16,6 +16,7 @@ function Home() {
   let [currentRoom, updateCurrentRoom] = useState(null);
   let [loggedIn, updateLoggedIn] = useState(user$.value);
   let [modal, updateModal] = useState(false);
+  let [errMsg, updateErrMsg] = useState(false);
 
   useEffect(() => {
     if (currentRoom) {
@@ -99,12 +100,14 @@ function Home() {
     e.preventDefault();
     axios
       .post("/chats/add", { name: roomName })
-      .then(response => {
-        console.log(response.data);
+      .then(_ => {
         updateModal(false);
+        updateRoomName("");
+        updateErrMsg(false);
       })
       .catch(err => {
         console.log(err);
+        if (err.response.status === 409) updateErrMsg(true);
       });
   }
 
@@ -125,6 +128,8 @@ function Home() {
           updateRoomName={updateRoomName}
           addRoom={addRoom}
           roomName={roomName}
+          updateErrMsg={updateErrMsg}
+          errMsg={errMsg}
         />
       ) : null}
       <header className="Home__header">
